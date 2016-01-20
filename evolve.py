@@ -5,7 +5,14 @@ Test the result of some evolutions mechanismes (http://lesswrong.com/lw/l5/evolv
 """
 
 from generation_manager import GenerationManager
+from animal import Animal
+from sd_gene import SDGene
+from anti_sd_gene import Anti_SDGene
 
+
+
+
+Animal.init_genes_class([SDGene, Anti_SDGene])
 
 generation_manager = GenerationManager(100)
 
