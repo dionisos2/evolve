@@ -1,7 +1,7 @@
 
-from abstract_gene import AbstractGene
+from abstract_gene_bool import AbstractGeneBool
 
-class SDGene(AbstractGene):
+class SDGene(AbstractGeneBool):
     """ The segregation_distorter(SD) trait make the sigling all males."""
 
     @classmethod

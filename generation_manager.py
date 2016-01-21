@@ -1,6 +1,8 @@
 
 import random
 from animal import Animal
+from abstract_gene_bool import AbstractGeneBool
+from abstract_gene_float import AbstractGeneFloat
 
 class GenerationManager:
     """ A generation of animals """
@@ -10,9 +12,7 @@ class GenerationManager:
         animals = []
         for i in range(number_of_animals):
             animal = Animal()
-            animal.mutate() # We start with random animals
             animals.append(animal)
-
 
         self.set_animals(animals)
 
@@ -27,15 +27,21 @@ class GenerationManager:
         result += "number of female : " + str(self.number_of_female()) + "\n"
 
         for gene in Animal.genes_class:
-            number_with_trait = self.number_of_animals_with_trait(gene.name())
-            result += "number of animal with " + gene.name() + " : " + str(number_with_trait)
-            if self.number_of_animals() != 0:
-                result += " (" + str(round(100*number_with_trait/self.number_of_animals(), 1)) + "%)"
-                number_of_males_with_trait = len([animal for animal in self.animals if animal.genes[gene.name()].has_trait and animal.sex == "male"])
-                number_of_females_with_trait = number_with_trait - number_of_males_with_trait
-                result += "(males=" + str(number_of_males_with_trait) + ", female=" + str(number_of_females_with_trait) + ")\n"
+            if issubclass(gene, AbstractGeneBool):
+                number_with_trait = self.number_of_animals_with_trait(gene.name())
+                result += "number of animal with " + gene.name() + " : " + str(number_with_trait)
+                if self.number_of_animals() != 0:
+                    result += " (" + str(round(100*number_with_trait/self.number_of_animals(), 1)) + "%)"
+                    number_of_males_with_trait = len([animal for animal in self.animals if animal.genes[gene.name()].has_trait and animal.sex == "male"])
+                    number_of_females_with_trait = number_with_trait - number_of_males_with_trait
+                    result += "(males=" + str(number_of_males_with_trait) + ", female=" + str(number_of_females_with_trait) + ")\n"
+                else:
+                    result += "\n"
             else:
-                result += "\n"
+                result += gene.name() + " distribution : ["
+                for i in range(20):
+                    result += str(self.number_of_animals_with_gene_between(gene.name(),i/20, (i+1)/20)) + ", "
+                result += "]\n"
 
         return result
 
@@ -50,6 +56,9 @@ class GenerationManager:
 
     def number_of_animals_with_trait(self, gene_name):
         return len([animal for animal in self.animals if animal.genes[gene_name].has_trait])
+
+    def number_of_animals_with_gene_between(self, gene_name, minimun, maximum):
+        return len([animal for animal in self.animals if (animal.genes[gene_name].value >= minimun and animal.genes[gene_name].value < maximum)])
 
     def reproduce(self, male_parent, female_parent):
         assert isinstance(male_parent, Animal)
