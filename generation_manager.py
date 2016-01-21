@@ -6,11 +6,11 @@ class GenerationManager:
     """ A generation of animals """
     def __init__(self, number_of_animals):
         self.reproductive_capacity = 5
-        self.max_animal_number = 500
+        self.max_animal_number = 1000
         animals = []
         for i in range(number_of_animals):
             animal = Animal()
-            animal.mutate(5) # We start with random animals
+            animal.mutate() # We start with random animals
             animals.append(animal)
 
 
@@ -30,7 +30,10 @@ class GenerationManager:
             number_with_trait = self.number_of_animals_with_trait(gene.name())
             result += "number of animal with " + gene.name() + " : " + str(number_with_trait)
             if self.number_of_animals() != 0:
-                result += " (" + str(round(100*number_with_trait/self.number_of_animals(), 0)) + "%)\n"
+                result += " (" + str(round(100*number_with_trait/self.number_of_animals(), 1)) + "%)"
+                number_of_males_with_trait = len([animal for animal in self.animals if animal.genes[gene.name()].has_trait and animal.sex == "male"])
+                number_of_females_with_trait = number_with_trait - number_of_males_with_trait
+                result += "(males=" + str(number_of_males_with_trait) + ", female=" + str(number_of_females_with_trait) + ")\n"
             else:
                 result += "\n"
 
@@ -46,7 +49,7 @@ class GenerationManager:
         return len([animal for animal in self.animals if animal.sex == "female"])
 
     def number_of_animals_with_trait(self, gene_name):
-        return len([animal for animal in self.animals if animal.genes[gene_name].has_trait()])
+        return len([animal for animal in self.animals if animal.genes[gene_name].has_trait])
 
     def reproduce(self, male_parent, female_parent):
         assert isinstance(male_parent, Animal)

@@ -27,7 +27,7 @@ class Animal:
 
     @classmethod
     def init_genes_class(cls, genes_class):
-        """ The kind of genes of animal, the order matter """
+        """ The kind of genes of animal """
         if len(genes_class) > 0:
             # Just to see we got something that seem ok
             assert issubclass(genes_class[0], AbstractGene)
@@ -38,7 +38,7 @@ class Animal:
         result = "-"*20 + "\n"
         result += "sex : " + self.sex + "\n"
         for gene in self.genes.values():
-            result += gene.name() + " : " + str(gene.constructing_step) + "(" + str(gene.has_trait()) + ")\n"
+            result += gene.name() + " : " + str(gene.has_trait) + "\n"
         return result
 
     def inherit_sex(self, male_parent, female_parent):
@@ -64,17 +64,11 @@ class Animal:
         for gene in self.genes:
             male_gene = male_parent.genes[gene]
             female_gene = female_parent.genes[gene]
-            if self.genes[gene].X_or_Y() == "X":
-                self.genes[gene].constructing_step = (male_gene.constructing_step + female_gene.constructing_step) / 2
-            else:
-                if self.sex == "male":
-                    self.genes[gene].constructing_step = male_gene.constructing_step
+            self.genes[gene].inherit(self.sex, male_gene, female_gene)
+
 
     def mutate(self, number_of_times = 1):
         """ add -1, 0 or 1 to each genes, randomly. (it can’t go below 0) """
         for i in range(number_of_times):
             for gene in self.genes:
-                self.genes[gene].constructing_step += random.randint(-1, 1)
-                if self.genes[gene].constructing_step < 0:
-                    self.genes[gene].constructing_step = 0
-
+                self.genes[gene].mutate(self.sex)

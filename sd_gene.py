@@ -3,13 +3,18 @@ from abstract_gene import AbstractGene
 
 class SDGene(AbstractGene):
     """ The segregation_distorter(SD) trait make the sigling all males."""
+
     @classmethod
     def X_or_Y(cls):
         return "Y" #(male only)
 
     @classmethod
-    def trait_difficulty(cls):
-        return 0.001
+    def emergence_rate(cls):
+        return 0.0005
+
+    @classmethod
+    def equilibrium(cls):
+        return 0.05
 
     @classmethod
     def priority(cls):
@@ -20,7 +25,7 @@ class SDGene(AbstractGene):
         assert isinstance(male_gene, SDGene)
         assert isinstance(female_gene, SDGene)
 
-        if male_gene.has_trait():
+        if male_gene.has_trait:
             return "male"
         else:
             return sex

@@ -14,11 +14,11 @@ from anti_sd_gene import Anti_SDGene
 
 Animal.init_genes_class([SDGene, Anti_SDGene])
 
-generation_manager = GenerationManager(100)
+generation_manager = GenerationManager(1000)
 
 print(generation_manager)
 
-for i in range(50):
+for i in range(5000):
     input()
     generation_manager.next_generation()
     print(generation_manager)

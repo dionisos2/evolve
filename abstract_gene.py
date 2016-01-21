@@ -1,37 +1,66 @@
-import math
-from abc import ABCMeta, abstractmethod, abstractproperty
+
+import random
+from abc import ABCMeta, abstractmethod, abstractproperty, abstractclassmethod
 
 class AbstractGene:
     __metaclass__ = ABCMeta
-    minimun_number_of_steps_scratch = None
 
     def __init__(self):
-        self.constructing_step = 0.0
+        self._has_trait = False
 
     @classmethod
     def X_or_Y(cls):
-        pass
+        """ X or Y gene """
+        raise NotImplementedError(str(cls) + " don’t implement X_or_Y method")
 
     @classmethod
-    def trait_difficulty(cls):
-        pass
+    def emergence_rate(cls):
+        """ What part of genes without the traits, will get the traits at each mutations """
+        raise NotImplementedError(str(cls) + " don’t implement emergence_rate method")
 
     @classmethod
-    def get_minimun_number_of_steps_scratch(cls):
-        if cls.minimun_number_of_steps_scratch == None:
-            # the probability P, to get the trait from scratch in the minimun number of steps N, is :
-            # P = (1/3)^N = exp(ln(1/3)*N) ⇔
-            # ln(P) = ln(1/3)*N ⇔
-            # N = ln(P)/ln(1/3)
-            P = cls.trait_difficulty()
-            if P > 0:
-                cls.minimun_number_of_steps_scratch = math.log(P)/math.log(1/3)
+    def equilibrium(cls):
+        """ Proportion of genes with the trait, at equilibrium (if the gene do nothing). """
+        raise NotImplementedError(str(cls) + " don’t implement equilibrium method")
+
+    @classmethod
+    def priority(cls):
+        raise NotImplementedError(str(cls) + " don’t implement priority method")
+
+    @classmethod
+    def inherit_sex_handle(cls, sex, male_gene, female_gene):
+        return sex
+
+    @classmethod
+    def extinction_rate(cls):
+        """ What part of genes with the traits will lose it, at each mutution. """
+        return (1/cls.equilibrium() - 1) * cls.emergence_rate()
+
+    def mutate(self, sex):
+        extinction_rate = self.__class__.extinction_rate()
+        emergence_rate = self.__class__.emergence_rate()
+        if self._has_trait:
+            if random.random() < extinction_rate:
+                self._has_trait = False
+        else:
+            if random.random() < emergence_rate:
+                self._has_trait = True
+        if (sex == "female") and (self.__class__.X_or_Y() == "Y"):
+            self._has_trait = False
+
+    def inherit(self, sex, male_gene, female_gene):
+        assert isinstance(male_gene, AbstractGene)
+        assert isinstance(female_gene, AbstractGene)
+
+        if self.__class__.X_or_Y() == "X":
+            if male_gene.has_trait == female_gene.has_trait:
+                self._has_trait = male_gene.has_trait
             else:
-                cls.minimun_number_of_steps_scratch = float("inf")
+                self._has_trait = (random.random() > 0.5)
+        else:
+            if sex == "male":
+                self._has_trait = male_gene.has_trait
 
-        return cls.minimun_number_of_steps_scratch
-
-
+    @property
     def has_trait(self):
-        result = self.constructing_step >= self.__class__.get_minimun_number_of_steps_scratch()
-        return result
+        return self._has_trait
