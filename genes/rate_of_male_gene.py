@@ -8,8 +8,8 @@ class RateOfMaleGene(AbstractGeneFloat):
     def __init__(self):
         super().__init__()
         # self.value = random.uniform(0, 1)
-        # self.value = 0.5
-        self.value = random.choice([0.2, 0.8])
+        self.value = 0.1
+        # self.value = random.choice([0.2, 0.8])
 
     @classmethod
     def rate_of_change(cls):
@@ -28,6 +28,10 @@ class RateOfMaleGene(AbstractGeneFloat):
     @classmethod
     def inherit_sex_handle(cls, sex, male_gene, female_gene, options):
         value = (male_gene.value + female_gene.value)/2
+        if value < 0:
+            value = 0
+        if value > 1:
+            value = 1
         if random.random() < value:
             return ("male", options)
         else:

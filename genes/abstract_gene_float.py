@@ -12,10 +12,6 @@ class AbstractGeneFloat(AbstractGene):
 
     def mutate(self, sex):
         self.value += random.uniform(-self.rate_of_change(), +self.rate_of_change())
-        if self.value < 0:
-            self.value = 0
-        if self.value > 1:
-            self.value = 1
         if (sex == "female") and (self.__class__.X_or_Y() == "Y"):
             self.value = 0
 
@@ -29,8 +25,11 @@ class AbstractGeneFloat(AbstractGene):
         assert isinstance(female_gene, AbstractGene)
 
         if self.__class__.X_or_Y() == "X":
-            self.value = (male_gene.value + female_gene.value) / 2
-            # print(str(male_gene.value) + "/" + str(female_gene.value) + "=" + str(self.value))
+            # self.value = (male_gene.value + female_gene.value) / 2
+            if random.random() > 0.5:
+                self.value = male_gene.value
+            else:
+                self.value = female_gene.value
         else:
             if sex == "male":
                 self.value = male_gene.value

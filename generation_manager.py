@@ -7,8 +7,8 @@ from genes.abstract_gene_float import AbstractGeneFloat
 class GenerationManager:
     """ A generation of animals """
     def __init__(self, number_of_animals):
-        self.reproductive_capacity = 5
         self.max_animal_number = number_of_animals
+        self.action_callback = lambda animal, animals: False
         animals = []
         for i in range(number_of_animals):
             animal = Animal()
@@ -25,6 +25,10 @@ class GenerationManager:
         result += "number of animals : " + str(self.number_of_animals()) + "\n"
         result += "number of male : " + str(self.number_of_male()) + "\n"
         result += "number of female : " + str(self.number_of_female()) + "\n"
+        result += "reproduction capacity distribution : ["
+        for i in range(0, 10):
+            result += str(self.number_of_animals_with_rc_between(i, i+1)) + ", "
+        result += str(self.number_of_animals_with_rc_between(10 , 100)) + "]\n"
 
         for gene in Animal.genes_class:
             if issubclass(gene, AbstractGeneBool):
@@ -39,9 +43,10 @@ class GenerationManager:
                     result += "\n"
             else:
                 result += gene.name() + " distribution : ["
-                for i in range(20):
+                result += str(self.number_of_animals_with_gene_between(gene.name(),-1000 , 1/20)) + ", "
+                for i in range(1,19):
                     result += str(self.number_of_animals_with_gene_between(gene.name(),i/20, (i+1)/20)) + ", "
-                result += "]\n"
+                result += str(self.number_of_animals_with_gene_between(gene.name(),19/20 , 2)) + "]\n"
 
         return result
 
@@ -57,8 +62,18 @@ class GenerationManager:
     def number_of_animals_with_trait(self, gene_name):
         return len([animal for animal in self.animals if animal.genes[gene_name].has_trait])
 
-    def number_of_animals_with_gene_between(self, gene_name, minimun, maximum):
-        return len([animal for animal in self.animals if (animal.genes[gene_name].value >= minimun and animal.genes[gene_name].value < maximum)])
+    def number_of_animals_with_rc_between(self, minimum, maximum):
+        return len([animal for animal in self.animals if (animal.reproductive_capacity >= minimum and animal.reproductive_capacity < maximum)])
+
+    def number_of_animals_with_gene_between(self, gene_name, minimum, maximum):
+        return len([animal for animal in self.animals if (animal.genes[gene_name].value >= minimum and animal.genes[gene_name].value < maximum)])
+
+    def actions(self, number_of_actions):
+        for i in range(number_of_actions):
+            for animal in self.animals:
+                result = self.action_callback(animal, self.animals)
+                if not result:
+                    raise RuntimeError("You should init generation_manager.action_callback")
 
     def reproduce(self, male_parent, female_parent):
         assert isinstance(male_parent, Animal)
@@ -67,7 +82,11 @@ class GenerationManager:
         assert female_parent.sex == "female"
 
         children = []
-        for i in range(self.reproductive_capacity):
+        reproductive_capacity = round((male_parent.reproductive_capacity + female_parent.reproductive_capacity)/2, 0)
+        if reproductive_capacity <= 0:
+            return []
+
+        for i in range(int(reproductive_capacity)):
             child = Animal()
             child.inherit(male_parent, female_parent)
             child.mutate()

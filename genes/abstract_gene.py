@@ -22,6 +22,9 @@ class AbstractGene:
     def inherit_sex_handle(cls, sex, male_gene, female_gene, options):
         return (sex, options)
 
+    def choose_handle(self, choice_input, options):
+        return ([], options)
+
     def mutate(self, sex):
         raise NotImplementedError(str(cls) + " don’t implement mutate method")
 

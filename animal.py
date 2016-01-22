@@ -20,7 +20,7 @@ class Animal:
 
         # The default sex is random (50/50), we change it after, according to the experiment.
         self.sex = random.choice(["male", "female"])
-
+        self.reproductive_capacity = 5
         self.genes = {}
         for gene_class in Animal.genes_class:
             self.genes[gene_class.name()] = gene_class()
@@ -67,9 +67,18 @@ class Animal:
             female_gene = female_parent.genes[gene]
             self.genes[gene].inherit(self.sex, male_gene, female_gene)
 
+    def choose(self, choice_input):
+        sorted_genes = sorted(self.genes.items(), key=lambda x: x[1].priority(), reverse=True)
+
+        options = []
+        for gene_item in sorted_genes:
+            gene_name = gene_item[0]
+            (choice, options) = self.genes[gene_name].choose_handle(choice_input, options)
+        return choice
 
     def mutate(self, number_of_times = 1):
         """ add -1, 0 or 1 to each genes, randomly. (it can’t go below 0) """
         for i in range(number_of_times):
             for gene in self.genes:
                 self.genes[gene].mutate(self.sex)
+
