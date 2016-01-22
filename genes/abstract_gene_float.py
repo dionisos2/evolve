@@ -25,11 +25,11 @@ class AbstractGeneFloat(AbstractGene):
         assert isinstance(female_gene, AbstractGene)
 
         if self.__class__.X_or_Y() == "X":
-            # self.value = (male_gene.value + female_gene.value) / 2
-            if random.random() > 0.5:
-                self.value = male_gene.value
-            else:
-                self.value = female_gene.value
+            self.value = (male_gene.value + female_gene.value) / 2
+            # if random.random() > 0.5:
+            #     self.value = male_gene.value
+            # else:
+            #     self.value = female_gene.value
         else:
             if sex == "male":
                 self.value = male_gene.value

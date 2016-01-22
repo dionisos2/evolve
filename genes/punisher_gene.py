@@ -24,7 +24,7 @@ class PunisherGene(AbstractGeneFloat):
         return 3
 
     def choose_handle(self, choice_input, options):
-        type_of_punishment = "revenge"
+        type_of_punishment = "no empathy"
 
         if self.value > choice_input[2]:
             if type_of_punishment == "no empathy":
