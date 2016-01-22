@@ -1,13 +1,15 @@
 
 import random
-from abstract_gene_float import AbstractGeneFloat
+from genes.abstract_gene_float import AbstractGeneFloat
 
 class RateOfMaleGene(AbstractGeneFloat):
     """ A gene that give you a trait or not """
 
     def __init__(self):
         super().__init__()
-        self.value = 0.1
+        # self.value = random.uniform(0, 1)
+        # self.value = 0.5
+        self.value = random.choice([0.2, 0.8])
 
     @classmethod
     def rate_of_change(cls):

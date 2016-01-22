@@ -1,6 +1,6 @@
 import random
 from abc import ABCMeta, abstractmethod, abstractproperty, abstractclassmethod
-from abstract_gene import AbstractGene
+from genes.abstract_gene import AbstractGene
 
 class AbstractGeneFloat(AbstractGene):
     """ A gene that give you a number between 0 and 1 """

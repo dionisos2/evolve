@@ -1,7 +1,7 @@
 
 import random
 
-from abstract_gene import AbstractGene
+from genes.abstract_gene import AbstractGene
 
 class Animal:
     """

@@ -1,6 +1,6 @@
 
 import random
-from abstract_gene_bool import AbstractGeneBool
+from genes.abstract_gene_bool import AbstractGeneBool
 
 class Anti_SDGene(AbstractGeneBool):
     """ The anti-SD trait cancel the segregation_distorter_trait. """

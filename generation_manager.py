@@ -1,8 +1,8 @@
 
 import random
 from animal import Animal
-from abstract_gene_bool import AbstractGeneBool
-from abstract_gene_float import AbstractGeneFloat
+from genes.abstract_gene_bool import AbstractGeneBool
+from genes.abstract_gene_float import AbstractGeneFloat
 
 class GenerationManager:
     """ A generation of animals """

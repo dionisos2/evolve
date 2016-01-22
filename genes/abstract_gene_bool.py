@@ -1,6 +1,6 @@
 import random
 from abc import ABCMeta, abstractmethod, abstractproperty, abstractclassmethod
-from abstract_gene import AbstractGene
+from genes.abstract_gene import AbstractGene
 
 class AbstractGeneBool(AbstractGene):
     """ A gene that give you a trait or not """
