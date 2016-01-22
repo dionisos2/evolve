@@ -21,14 +21,16 @@ class EmpatheticGene(AbstractGeneFloat):
 
     @classmethod
     def priority(cls):
-        return 3
+        return 4
 
     def choose_handle(self, choice_input, options):
         choice_result = choice_input[0] + choice_input[1]*self.value
         # choice_result = choice_input[0] * (0.1 - self.value)
         if choice_result > 0:
+            options["choice"] = True
             return ([True], options)
         else:
+            options["choice"] = False
             return ([False], options)
 
 

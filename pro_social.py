@@ -8,15 +8,19 @@ import random
 from generation_manager import GenerationManager
 from animal import Animal
 from genes.empathetic_gene import EmpatheticGene
+from genes.punisher_gene import PunisherGene
 
-Animal.init_genes_class([EmpatheticGene])
+Animal.init_genes_class([EmpatheticGene, PunisherGene])
 
 def action_callback(animal, animals):
     assert isinstance(animal, Animal)
     team_mate = random.randint(0, len(animals)-1)
+
     gain = random.uniform(-15, 5)
     team_mate_gain = random.uniform(-15, 5)
-    choice_input = [gain, team_mate_gain]
+    team_mate_empathy = animals[team_mate].genes["empathetic gene"].value
+    choice_input = [gain, team_mate_gain, team_mate_empathy]
+
     choice_output = animal.choose(choice_input)
     if choice_output[0]:
         animal.reproductive_capacity += gain

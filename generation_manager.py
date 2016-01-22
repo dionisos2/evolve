@@ -43,10 +43,10 @@ class GenerationManager:
                     result += "\n"
             else:
                 result += gene.name() + " distribution : ["
-                result += str(self.number_of_animals_with_gene_between(gene.name(),-1000 , 1/20)) + ", "
+                result += str(self.number_of_animals_with_gene_between(gene.name(),-100000 , 1/20)) + ", "
                 for i in range(1,19):
                     result += str(self.number_of_animals_with_gene_between(gene.name(),i/20, (i+1)/20)) + ", "
-                result += str(self.number_of_animals_with_gene_between(gene.name(),19/20 , 2)) + "]\n"
+                result += str(self.number_of_animals_with_gene_between(gene.name(),19/20 , 100000)) + "]\n"
 
         return result
 

@@ -70,7 +70,7 @@ class Animal:
     def choose(self, choice_input):
         sorted_genes = sorted(self.genes.items(), key=lambda x: x[1].priority(), reverse=True)
 
-        options = []
+        options = {}
         for gene_item in sorted_genes:
             gene_name = gene_item[0]
             (choice, options) = self.genes[gene_name].choose_handle(choice_input, options)
