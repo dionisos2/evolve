@@ -46,11 +46,12 @@ class Animal:
 
         sorted_genes = sorted(self.genes.items(), key=lambda x: x[1].priority(), reverse=True)
 
+        options = []
         for gene_item in sorted_genes:
             gene_name = gene_item[0]
             male_gene = male_parent.genes[gene_name]
             female_gene = female_parent.genes[gene_name]
-            self.sex = self.genes[gene_name].__class__.inherit_sex_handle(self.sex, male_gene, female_gene)
+            (self.sex, options) = self.genes[gene_name].__class__.inherit_sex_handle(self.sex, male_gene, female_gene, options)
 
     def inherit(self, male_parent, female_parent):
         """ The animal inherit genes form its parents """

@@ -8,7 +8,7 @@ class GenerationManager:
     """ A generation of animals """
     def __init__(self, number_of_animals):
         self.reproductive_capacity = 5
-        self.max_animal_number = 1000
+        self.max_animal_number = number_of_animals
         animals = []
         for i in range(number_of_animals):
             animal = Animal()

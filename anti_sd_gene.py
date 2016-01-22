@@ -19,17 +19,16 @@ class Anti_SDGene(AbstractGeneBool):
 
     @classmethod
     def priority(cls):
-        return 1
+        return 2
 
     @classmethod
-    def inherit_sex_handle(cls, sex, male_gene, female_gene):
+    def inherit_sex_handle(cls, sex, male_gene, female_gene, options):
         assert isinstance(male_gene, Anti_SDGene)
         assert isinstance(female_gene, Anti_SDGene)
 
         if male_gene.has_trait or female_gene.has_trait:
-            return random.choice(["male", "female"])
-        else:
-            return sex
+            options.append("anti-SD")
+        return (sex, options)
 
     @classmethod
     def name(cls):

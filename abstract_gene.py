@@ -19,8 +19,8 @@ class AbstractGene:
         raise NotImplementedError(str(cls) + " don’t implement name method")
 
     @classmethod
-    def inherit_sex_handle(cls, sex, male_gene, female_gene):
-        return sex
+    def inherit_sex_handle(cls, sex, male_gene, female_gene, options):
+        return (sex, options)
 
     def mutate(self, sex):
         raise NotImplementedError(str(cls) + " don’t implement mutate method")

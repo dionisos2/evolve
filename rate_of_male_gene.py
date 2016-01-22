@@ -21,15 +21,15 @@ class RateOfMaleGene(AbstractGeneFloat):
 
     @classmethod
     def priority(cls):
-        return 1
+        return 3
 
     @classmethod
-    def inherit_sex_handle(cls, sex, male_gene, female_gene):
+    def inherit_sex_handle(cls, sex, male_gene, female_gene, options):
         value = (male_gene.value + female_gene.value)/2
         if random.random() < value:
-            return "male"
+            return ("male", options)
         else:
-            return "female"
+            return ("female", options)
 
     @classmethod
     def name(cls):
