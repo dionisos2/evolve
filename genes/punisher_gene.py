@@ -5,6 +5,7 @@ from genes.abstract_gene_float import AbstractGeneFloat
 class PunisherGene(AbstractGeneFloat):
     """ The more empathetic, the more willing to take others into consideration """
 
+    type_of_punishment = "no empathy"
     def __init__(self):
         super().__init__()
         self.value = 0#random.uniform(0, 1)
@@ -24,22 +25,21 @@ class PunisherGene(AbstractGeneFloat):
         return 3
 
     def choose_handle(self, choice_input, options):
-        type_of_punishment = "no empathy"
 
-        if self.value > choice_input[2]:
-            if type_of_punishment == "no empathy":
-                if choice_input[0] > 0:
-                    return ([True], options)
+        if self.value > choice_input["teammate_empathy"]:
+            if PunisherGene.type_of_punishment == "no empathy":
+                if choice_input["gain"] > 0:
+                    return ({"accept_cooperation":True}, options)
                 else:
-                    return ([False], options)
+                    return ({"accept_cooperation":False}, options)
 
-            if type_of_punishment == "revenge":
-                if choice_input[1] > 0:
-                    return ([False], options)
+            if PunisherGene.type_of_punishment == "revenge":
+                if choice_input["teammate_gain"] > 0:
+                    return ({"accept_cooperation":False}, options)
                 else:
-                    return ([True], options)
+                    return ({"accept_cooperation":True}, options)
         else:
-            return ([options["choice"]], options)
+            return ({"accept_cooperation":options["choice"]}, options)
 
 
     @classmethod

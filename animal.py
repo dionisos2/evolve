@@ -5,18 +5,16 @@ from genes.abstract_gene import AbstractGene
 
 class Animal:
     """
-    Traits_difficulty represent approximatively the probability to acquire
-    a particular traits from scratch in minimun steps.
-
-    Genes are what is heritable between generations, it represent
-    how close the animal is to get a particular traits.
+    Animal that can mutate and produce offsprings.
+    Offsprings inherite the genes of their parents.
     """
 
     initialized = False
 
     def __init__(self):
         if not Animal.initialized:
-            raise RuntimeError("You should call Animal.init_genes_class before instanciating Animal.")
+            raise RuntimeError("You should call Animal.init_genes_class\
+            before instanciating Animal.")
 
         # The default sex is random (50/50), we change it after, according to the experiment.
         self.sex = random.choice(["male", "female"])
@@ -27,7 +25,7 @@ class Animal:
 
     @classmethod
     def init_genes_class(cls, genes_class):
-        """ The kind of genes of animal """
+        """ The type of genes that the animals have in the experiment """
         if len(genes_class) > 0:
             # Just to see we got something that seem ok
             assert issubclass(genes_class[0], AbstractGene)
@@ -42,6 +40,7 @@ class Animal:
         return result
 
     def inherit_sex(self, male_parent, female_parent):
+        """ Set sex to male or female randomly (50/50), but some genes can influence that """
         self.sex = random.choice(["male", "female"])
 
         sorted_genes = sorted(self.genes.items(), key=lambda x: x[1].priority(), reverse=True)
@@ -68,6 +67,7 @@ class Animal:
             self.genes[gene].inherit(self.sex, male_gene, female_gene)
 
     def choose(self, choice_input):
+        """ How the animal will behave according to his genes """
         sorted_genes = sorted(self.genes.items(), key=lambda x: x[1].priority(), reverse=True)
 
         options = {}
@@ -76,8 +76,8 @@ class Animal:
             (choice, options) = self.genes[gene_name].choose_handle(choice_input, options)
         return choice
 
-    def mutate(self, number_of_times = 1):
-        """ add -1, 0 or 1 to each genes, randomly. (it can’t go below 0) """
+    def mutate(self, number_of_times=1):
+        """ Mutate all genes randomly """
         for i in range(number_of_times):
             for gene in self.genes:
                 self.genes[gene].mutate(self.sex)

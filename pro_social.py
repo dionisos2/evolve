@@ -10,21 +10,25 @@ from animal import Animal
 from genes.empathetic_gene import EmpatheticGene
 from genes.punisher_gene import PunisherGene
 
+PunisherGene.type_of_punishment = "no empathy"
 Animal.init_genes_class([EmpatheticGene, PunisherGene])
 
 def action_callback(animal, animals):
+    """ What happen in the environnement """
     assert isinstance(animal, Animal)
-    team_mate = random.randint(0, len(animals)-1)
+    teammate = random.randint(0, len(animals)-1)
 
     gain = random.uniform(-15, 5)
-    team_mate_gain = random.uniform(-15, 5)
-    team_mate_empathy = animals[team_mate].genes["empathetic gene"].value
-    choice_input = [gain, team_mate_gain, team_mate_empathy]
+    teammate_gain = random.uniform(-15, 5)
+    teammate_empathy = animals[teammate].genes["empathetic gene"].value
+    choice_input = {"gain":gain,
+                    "teammate_gain":teammate_gain,
+                    "teammate_empathy":teammate_empathy}
 
     choice_output = animal.choose(choice_input)
-    if choice_output[0]:
+    if choice_output["accept_cooperation"]:
         animal.reproductive_capacity += gain
-        animals[team_mate].reproductive_capacity += team_mate_gain
+        animals[teammate].reproductive_capacity += teammate_gain
     return True
 
 generation_manager = GenerationManager(200)

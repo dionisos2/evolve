@@ -24,14 +24,13 @@ class EmpatheticGene(AbstractGeneFloat):
         return 4
 
     def choose_handle(self, choice_input, options):
-        choice_result = choice_input[0] + choice_input[1]*self.value
-        # choice_result = choice_input[0] * (0.1 - self.value)
+        choice_result = choice_input["gain"] + choice_input["teammate_gain"]*self.value
         if choice_result > 0:
             options["choice"] = True
-            return ([True], options)
+            return ({"accept_cooperation":True}, options)
         else:
             options["choice"] = False
-            return ([False], options)
+            return ({"accept_cooperation":False}, options)
 
 
     @classmethod

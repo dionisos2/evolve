@@ -23,8 +23,8 @@ class GenerationManager:
     def __str__(self):
         result = "-"*20 + "\n"
         result += "number of animals : " + str(self.number_of_animals()) + "\n"
-        result += "number of male : " + str(self.number_of_male()) + "\n"
-        result += "number of female : " + str(self.number_of_female()) + "\n"
+        result += "number of males : " + str(self.number_of_male()) + "\n"
+        result += "number of females : " + str(self.number_of_female()) + "\n"
         result += "reproduction capacity distribution : ["
         for i in range(0, 10):
             result += str(self.number_of_animals_with_rc_between(i, i+1)) + ", "
@@ -33,12 +33,12 @@ class GenerationManager:
         for gene in Animal.genes_class:
             if issubclass(gene, AbstractGeneBool):
                 number_with_trait = self.number_of_animals_with_trait(gene.name())
-                result += "number of animal with " + gene.name() + " : " + str(number_with_trait)
+                result += "number of animals with " + gene.name() + " : " + str(number_with_trait)
                 if self.number_of_animals() != 0:
                     result += " (" + str(round(100*number_with_trait/self.number_of_animals(), 1)) + "%)"
                     number_of_males_with_trait = len([animal for animal in self.animals if animal.genes[gene.name()].has_trait and animal.sex == "male"])
                     number_of_females_with_trait = number_with_trait - number_of_males_with_trait
-                    result += "(males=" + str(number_of_males_with_trait) + ", female=" + str(number_of_females_with_trait) + ")\n"
+                    result += "(males=" + str(number_of_males_with_trait) + ", females=" + str(number_of_females_with_trait) + ")\n"
                 else:
                     result += "\n"
             else:
@@ -69,6 +69,7 @@ class GenerationManager:
         return len([animal for animal in self.animals if (animal.genes[gene_name].value >= minimum and animal.genes[gene_name].value < maximum)])
 
     def actions(self, number_of_actions):
+        """ What happen in the environnement between two generations """
         for i in range(number_of_actions):
             for animal in self.animals:
                 result = self.action_callback(animal, self.animals)
