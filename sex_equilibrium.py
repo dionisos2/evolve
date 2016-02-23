@@ -17,13 +17,4 @@ Animal.init_genes_class([RateOfMaleGene])#, SDGene, Anti_SDGene])
 
 generation_manager = GenerationManager(2000)
 
-print(generation_manager)
-
-for i in range(5000):
-    input()
-    generation_manager.next_generation()
-    print(generation_manager)
-    if generation_manager.number_of_animals() == 0:
-        print("DEAD")
-        quit()
-
+generation_manager.run()

@@ -76,6 +76,23 @@ class GenerationManager:
                 if not result:
                     raise RuntimeError("You should init generation_manager.action_callback")
 
+    def run(self, actions_by_generation=0):
+        """ Run the experiment ! """
+        dead = False
+        generation_number = 1
+        print(self)
+        while not dead:
+            input()
+            self.next_generation()
+            self.actions(actions_by_generation)
+            print("generation number : " + str(generation_number))
+            print(self)
+            if self.number_of_animals() == 0:
+                print("DEAD")
+                dead = True
+            else:
+                generation_number += 1
+
     def reproduce(self, male_parent, female_parent):
         assert isinstance(male_parent, Animal)
         assert isinstance(female_parent, Animal)
