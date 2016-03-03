@@ -26,9 +26,10 @@ class GenerationManager:
         result += "number of males : " + str(self.number_of_male()) + "\n"
         result += "number of females : " + str(self.number_of_female()) + "\n"
         result += "reproduction capacity distribution : ["
-        for i in range(0, 10):
+        borne_sup = 20
+        for i in range(0, borne_sup):
             result += str(self.number_of_animals_with_rc_between(i, i+1)) + ", "
-        result += str(self.number_of_animals_with_rc_between(10 , 100)) + "]\n"
+        result += str(self.number_of_animals_with_rc_between(borne_sup, 10000)) + "]\n"
 
         for gene in Animal.genes_class:
             if issubclass(gene, AbstractGeneBool):
@@ -43,10 +44,15 @@ class GenerationManager:
                     result += "\n"
             else:
                 result += gene.name() + " distribution : ["
-                result += str(self.number_of_animals_with_gene_between(gene.name(),-100000 , 1/20)) + ", "
-                for i in range(1,19):
-                    result += str(self.number_of_animals_with_gene_between(gene.name(),i/20, (i+1)/20)) + ", "
-                result += str(self.number_of_animals_with_gene_between(gene.name(),19/20 , 100000)) + "]\n"
+                result += str(self.number_of_animals_with_gene_between(gene.name(), -100000, 1/20)) + ", "
+                for i in range(1, 19):
+                    result += str(self.number_of_animals_with_gene_between(gene.name(), i/20, (i+1)/20)) + ", "
+                result += str(self.number_of_animals_with_gene_between(gene.name(), 19/20, 100000)) + "]"
+                if self.animals:
+                    average = sum([animal.genes[gene.name()].value for animal in self.animals])/len(self.animals)
+                    result += " average = " + str(round(average, 3)) + "\n"
+                else:
+                    result += "\n"
 
         return result
 
@@ -83,7 +89,6 @@ class GenerationManager:
         print(self)
         while not dead:
             input()
-            self.next_generation()
             self.actions(actions_by_generation)
             print("generation number : " + str(generation_number))
             print(self)
@@ -92,6 +97,7 @@ class GenerationManager:
                 dead = True
             else:
                 generation_number += 1
+            self.next_generation()
 
     def reproduce(self, male_parent, female_parent):
         assert isinstance(male_parent, Animal)
