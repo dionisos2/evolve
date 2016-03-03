@@ -10,7 +10,7 @@ from animal import Animal
 from genes.empathetic_gene import EmpatheticGene
 from genes.punisher_gene import PunisherGene
 
-PunisherGene.type_of_punishment = "revenge"
+PunisherGene.type_of_punishment = "no empathy"
 Animal.init_genes_class([EmpatheticGene, PunisherGene])
 
 def action_callback(animal, animals):

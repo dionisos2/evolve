@@ -15,7 +15,7 @@ class Anti_SDGene(AbstractGeneBool):
 
     @classmethod
     def equilibrium(cls):
-        return 0.05
+        return 1
 
     @classmethod
     def priority(cls):

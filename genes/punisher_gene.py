@@ -13,7 +13,7 @@ class PunisherGene(AbstractGeneFloat):
     @classmethod
     def rate_of_change(cls):
         """ How fast the gene will change at each mutation """
-        return 0.1
+        return 0.01
 
     @classmethod
     def X_or_Y(cls):
