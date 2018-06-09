@@ -27,10 +27,10 @@ class EmpatheticGene(AbstractGeneFloat):
         choice_result = choice_input["gain"] + choice_input["teammate_gain"]*self.value
         if choice_result > 0:
             options["choice"] = True
-            return ({"accept_cooperation":True}, options)
+            return ({"accept":True}, options)
         else:
             options["choice"] = False
-            return ({"accept_cooperation":False}, options)
+            return ({"accept":False}, options)
 
 
     @classmethod

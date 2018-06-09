@@ -29,17 +29,17 @@ class PunisherGene(AbstractGeneFloat):
         if self.value > choice_input["teammate_empathy"]:
             if PunisherGene.type_of_punishment == "no empathy":
                 if choice_input["gain"] > 0:
-                    return ({"accept_cooperation":True}, options)
+                    return ({"accept":True}, options)
                 else:
-                    return ({"accept_cooperation":False}, options)
+                    return ({"accept":False}, options)
 
             if PunisherGene.type_of_punishment == "revenge":
                 if choice_input["teammate_gain"] > 0:
-                    return ({"accept_cooperation":False}, options)
+                    return ({"accept":False}, options)
                 else:
-                    return ({"accept_cooperation":True}, options)
+                    return ({"accept":True}, options)
         else:
-            return ({"accept_cooperation":options["choice"]}, options)
+            return ({"accept":options["choice"]}, options)
 
 
     @classmethod

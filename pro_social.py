@@ -26,7 +26,7 @@ def action_callback(animal, animals):
                     "teammate_empathy":teammate_empathy}
 
     choice_output = animal.choose(choice_input)
-    if choice_output["accept_cooperation"]:
+    if choice_output["accept"]:
         animal.reproductive_capacity += gain
         animals[teammate].reproductive_capacity += teammate_gain
     return True
